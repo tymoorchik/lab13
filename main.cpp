@@ -183,6 +183,37 @@ Matrix<T>& operator-(Matrix<T> A, Matrix<T> B){
 }
 
 
+template<class T>
+bool operator==(Matrix<T> A, Matrix<T> B){
+    if(A.get_colomns_number() != B.get_colomns_number() || A.get_lines_number() != B.get_lines_number()){
+        return false;
+    }
+    for(int i = 0; i < A.get_lines_number(); ++i){
+        for(int j = 0; j < B.get_colomns_number(); ++j){
+            if(A[i][j] != B[i][j]){
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+template<class T>
+bool operator==(Matrix<T> A, T c){
+    size_t n = A.get_lines_number(), m = A.get_colomns_number();
+    if(c == 0){
+        Matrix<T> B = Matrix<T>::zero_matrix(n, m);
+        return A == B;
+    }
+    if(n != m){
+        std::cerr << "Impossible to compare not square matrix and scalar.";
+        exit(EXIT_FAILURE);
+    }
+    Matrix<T> B = Matrix<T>::E_matrix(n);
+    B *= c;
+    return A == B;
+}
+
 
 int main() {
 //    std::cout << Matrix<int>::zero_matrix(2, 2);
@@ -192,6 +223,7 @@ int main() {
 //    a *= 3;
 //    std::cout << a << "\n" << a * 4 << "\n" << 4 * a;
 //    std::cout << a << "\n" << b << "\n" << a*b;
-    std::cout << a + b << "\n" << a - b;
+//    std::cout << a + b << "\n" << a - b;
+    std::cout << (a == 1) << ' ' << (a == b);
     return 0;
 }
